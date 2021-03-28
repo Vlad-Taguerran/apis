@@ -11,10 +11,10 @@ class Web extends Router{
        $route['dashboard'] = ['route'=>'/dashboard','controller'=>'AdminController','action'=>'index'];
        $route['dashboard-user'] = ['route'=>'/dashboard-usuario','controller'=>'UserController','action'=>'index'];
        //Rotina de horarios
-       $route['marcar-horario'] = ['route' => '/marcar-horario', 'controller'=> 'AdminController','action'=>'marcar-horario'];
-       $route['salvar-horario'] = ['route'=>'/marcar-horario.salvar','controller'=> 'AdminController', 'action'=>'salvar_horario'];
-       $route['alterar-horario'] = ['route' => '/alterar-horario','controller' => 'AdminController', 'action' => 'atualizar_horario'];
-       $route['cancelar-horario']   =   ['$route'=>'/cancelar-horario', 'controller'=>'AdminController', 'action'=>'cancelar-horario'];
+       $route['marcar-horario'] = ['route' => '/marcar-horario', 'controller'=> 'AdminController','action'=>'marcar_horario'];
+       $route['salvar-horario'] = ['route'=>'/marcar-horario.salvar','controller'=> 'AdminController', 'action'=>'save_horario'];
+       $route['alterar-horario'] = ['route' => '/alterar-horario','controller' => 'AdminController', 'action' => 'update_horario'];
+       $route['cancelar-horario']   =   ['$route'=>'/cancelar-horario', 'controller'=>'AdminController', 'action'=>'delete_horario'];
        //Rotina Clientes
        $route['add-user'] =  ['route'=>'/add-user', 'controller' => 'AdminController', 'action' => 'add_user'];
        $route['save-user'] =  ['route'=>'/add-user.salvar', 'controller' => 'AdminController', 'action' => 'save_user'];
