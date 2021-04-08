@@ -7,11 +7,24 @@ namespace App\Model;
 class Admin extends \Core\Model\Model
 {
 private $id;
+private $token;
 private $nome;
-private $sobrenome;
-private $horario;
-private $data;
-private $atendimento;
+private $email;
+private $senha;
+private $cpf;
+private $tel;
+private $estado_civil;
+private $nascimento;
+private $sexo;
+private $comprovante;
+//dados aluno
+private $nome_aluno;
+private $cpf_aluno;
+private $matricula;
+private $sexo_aluno;
+private $nascimento_aluno;
+private $etapa_aluno;
+private $escola_id;
 
 
     public function __set($attr, $value)
@@ -22,63 +35,65 @@ private $atendimento;
     {
        return $this->$attr;
     }
-//Rotina de Horarios
-    public function save_horario()
-    {
-        $query = "INSERT INTO tb_horarios VALUES (:nome,:sobrenome,:horario,:data,:atendimento)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':nome',$this->__get('nome'));
-        $stmt->bindValue(':sobrenome',$this->__get(':sobrenome'));
-        $stmt->bindValue(':horario', $this->__get('data'));
-        $stmt->bindValue(':atendimento', $this->__get('atendimento'));
-        $stmt->execute();
 
-    }
-
-    public function update_horario()
-    {
-        $query  =   "UPDATE tb_horarios SET horario = :horario, data = :data";
-        $stmt   =   $this->db->prepare($query);
-        $stmt->bindValue('horario',$this->__get('horario'));
-        $stmt->bindValue('data', $this->__get('data'));
-        $stmt->execute();
-    }
-
-    public function delete_horario()
-    {
-        $query  =   "DELETE FROM tb_horarios WHERE id = :id";
-        $stmt   =   $this->db->prepare($query);
-        $stmt->bindValue('id', $this->__get('id') );
-        $stmt->execute();
-    }
 //Rotina de Usuario
 
-    public function save_user()
+    public function save_receivers()
     {
-        $query  =   "INSET INTO tb_users VAlUES (:nome,:sobrenome,:email,:senha,:tell,:ficha,:nivel";
+        $query  =   'INSERT INTO tb_receivers (nome,email,cpf,tel,estado_civil,nascimento,sexo,comprovante,senha,
+                                                nome_aluno,cpf_aluno,matricula,sexo_aluno,nascimento_aluno,etapa_aluno,
+                                                escola_id)
+         VAlUES (:nome,:email,:cpf,:tel,:estado_civil,STR_TO_DATE(  :nascimento , "%Y-%m-%d"),:sexo,:comprovante,:senha,
+                 :nome_aluno,:cpf_aluno,:matricula,:sexo_aluno,STR_TO_DATE(:nascimento_aluno, "%Y-%m-%d"),:etapa_aluno,:escola_id)';
         $stmt   =   $this->db->prepare($query);
         $stmt->bindValue(':nome', $this->__get('nome'));
-        $stmt->bindValue(':sobrenome', $this->__get('sobrenome'));
         $stmt->bindValue(':email', $this->__get('email'));
         $stmt->bindValue(':senha', MD5($this->__get('senha')));
-        $stmt->bindValue(':tell', 'tell');
-        $stmt->bindValue(':ficha',$this->__get('doc'));
-        $stmt->bindValue('nivel', $this->__get('nivel'));
+        $stmt->bindValue(':cpf', $this->__get('cpf'));
+        $stmt->bindValue(':tel', $this->__get('tel'));
+        $stmt->bindValue(':estado_civil', $this->__get('estado_civil'));
+        $stmt->bindValue(':nascimento', $this->__get('nascimento'));
+        $stmt->bindValue(':sexo', $this->__get('sexo'));
+        $stmt->bindValue(':comprovante', $this->__get('comprovante'));
+        //dados do aluno
+        $stmt->bindValue(':nome_aluno',$this->__get('nome_aluno'));
+        $stmt->bindValue(':cpf_aluno',$this->__get('cpf_aluno'));
+        $stmt->bindValue(':matricula',$this->__get('matricula'));
+        $stmt->bindValue(':sexo_aluno',$this->__get('sexo_aluno'));
+        $stmt->bindValue(':nascimento_aluno',$this->__get('nascimento_aluno'));
+        $stmt->bindValue(':etapa_aluno',$this->__get('etapa_aluno'));
+        $stmt->bindValue(':escola_id',$this->__get('escola_id'));
+
+
+        try {
+            $stmt->execute();
+        }catch (\PDOException $e){
+            return 301;
+        }
+    }
+
+    public function save_scool()
+    {
+        $query =    'INSERT INTO tb_schools 
+    (escola,estado,municipio,etapa,inep,nome_gestor,cpf,tel_escola,cargo,matricula,email_escola) VALUES 
+    (:escola,:estado,:municipio,:etapa,:inep,:nome_gestor,:cpf,:tel_escola,:cargo,:matricula,:email_escola)';
+    }
+    public function select_school()
+    {
+        $query = 'SELECT * FROM tb_schoos';
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function Update_user()
     {
-        $query  =   "UPDATE tb_users SET nome = :nome, sobrenome = :sobrenome, email = :email
-                    , senha = :senha, tell = :tell, ficha = :ficha WHERE id = :id";
+        $query  =   "UPDATE tb_users SET   senha = :senha WHERE token = :token";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue('id', $this->__get('id'));
-        $stmt->bindValue('nome',$this->__get('nome'));
-        $stmt->bindValue('sobrenome', $this->__get('sobrenome'));
-        $stmt->bindValue('email', $this->__get('email'));
         $stmt->bindValue('senha', $this->__get('senha'));
-        $stmt->bindValue('tell',$this->__get('tell'));
-        $stmt->bindValue('ficha',$this->__get('ficha'));
+        $stmt->bindValue(':token',$this->_get('token'));
+
         $stmt->execute();
 
     }
