@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use Core\Model\Container;
 
-class AdminController extends \Core\Controller\Controller
+class ReceiverController extends \Core\Controller\Controller
 {
     public function save_receiver()
     {
@@ -63,12 +63,12 @@ class AdminController extends \Core\Controller\Controller
             $save->__set('etapa_aluno', $etapa);
             $save->__set('escola_id', 1);
             $save->save_receivers();
-           if($save->save_receivers() == 301){
-               echo "erro";
-           }else{
-               move_uploaded_file($file['tmp_name'],$dir.$name_file);
-               echo 201;
-           }
+            if($save->save_receivers() == 301){
+                echo "erro";
+            }else{
+                move_uploaded_file($file['tmp_name'],$dir.$name_file);
+                echo 201;
+            }
 
 
         }
@@ -80,33 +80,5 @@ class AdminController extends \Core\Controller\Controller
 
     }
 
-    public function save_aluno()
-    {
-        if(isset($_POST)){
-            $nome = filter_var($_POST['nome'],FILTER_SANITIZE_STRING);
-            $cpf  = filter_var($_POST['cpf'], FILTER_SANITIZE_STRING);
-            $matricula = filter_var($_POST['matricula'],FILTER_SANITIZE_STRING);
-            $sexo = filter_var($_POST['sexo'], FILTER_SANITIZE_STRING);
-            $nascimento = filter_var($_POST['nascimento'], FILTER_SANITIZE_STRING);
-            $etapa = filter_var($_POST['etapa'], FILTER_SANITIZE_STRING);
 
-
-        }
-
-    }
-
-    public function save_user()
-    {
-
-    }
-
-    public function update_user()
-    {
-
-    }
-
-    public function delete_user()
-    {
-
-    }
 }

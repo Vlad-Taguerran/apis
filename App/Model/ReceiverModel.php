@@ -4,27 +4,28 @@
 namespace App\Model;
 
 
-class Admin extends \Core\Model\Model
+class ReceiverModel extends \Core\Model\Model
 {
-private $id;
-private $token;
-private $nome;
-private $email;
-private $senha;
-private $cpf;
-private $tel;
-private $estado_civil;
-private $nascimento;
-private $sexo;
-private $comprovante;
+    private $id;
+    private $token;
+    private $nome;
+    private $email;
+    private $senha;
+    private $cpf;
+    private $tel;
+    private $estado_civil;
+    private $nascimento;
+    private $sexo;
+    private $comprovante;
 //dados aluno
-private $nome_aluno;
-private $cpf_aluno;
-private $matricula;
-private $sexo_aluno;
-private $nascimento_aluno;
-private $etapa_aluno;
-private $escola_id;
+    private $nome_aluno;
+    private $cpf_aluno;
+    private $matricula;
+    private $sexo_aluno;
+    private $nascimento_aluno;
+    private $etapa_aluno;
+    private $escola_id;
+
 
 
     public function __set($attr, $value)
@@ -33,7 +34,7 @@ private $escola_id;
     }
     public function __get($attr)
     {
-       return $this->$attr;
+        return $this->$attr;
     }
 
 //Rotina de Usuario
@@ -72,19 +73,8 @@ private $escola_id;
         }
     }
 
-    public function save_scool()
-    {
-        $query =    'INSERT INTO tb_schools 
-    (escola,estado,municipio,etapa,inep,nome_gestor,cpf,tel_escola,cargo,matricula,email_escola) VALUES 
-    (:escola,:estado,:municipio,:etapa,:inep,:nome_gestor,:cpf,:tel_escola,:cargo,:matricula,:email_escola)';
-    }
-    public function select_school()
-    {
-        $query = 'SELECT * FROM tb_schoos';
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+
+
 
     public function Update_user()
     {
@@ -104,5 +94,4 @@ private $escola_id;
         $stmt = $this->db->prepare($query);
         $stmt->execute();
     }
-
 }
