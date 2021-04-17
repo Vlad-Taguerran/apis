@@ -80,5 +80,8 @@ class ReceiverController extends \Core\Controller\Controller
 
     }
 
-
+    public function get_receivers()
+    {
+        echo "Aqui";
+    }
 }
