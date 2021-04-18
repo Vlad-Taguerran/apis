@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Core\Model\Container;
 
+
 class ReceiverController extends \Core\Controller\Controller
 {
     public function save_receiver()
@@ -80,8 +81,9 @@ class ReceiverController extends \Core\Controller\Controller
 
     }
 
-    public function get_receivers()
+    public function get_receivers($id)
     {
-        echo "Aqui";
+
+        echo $id[1];
     }
 }

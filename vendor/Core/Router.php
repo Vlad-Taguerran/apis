@@ -4,69 +4,34 @@ namespace Core;
 
 
 
-use function MongoDB\BSON\toJSON;
-
-abstract class Router{
-    private $route;
 
 
-    abstract protected function initRoute();
+use Exception;
 
-    public static function getUrl(){
-        return parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-    }
-    //teste
-
-    private static function sanitizeURL($route)
-    {
-
-        $route = preg_match_all('/\{([^\}]*)\}/','/get/receiver/all/{teste}/{teste2}',$arr);
-       // echo $route."<br>";
-        echo "<pre>";
-        print_r($arr);
-        echo "</pre>";
-    }
+abstract class Router extends Router_Sanitize {
 
     /**
-     * @param $controller
-     * @return void
+     * @return array|false|int|string|null
      */
 
-    private static function sanitize($controller): void
-    {
-        $class = strstr($controller,"@",'true');
-        $class = "App\\Controller\\".ucfirst($class);
-        $ctl  = new $class;
-        $action = strstr($controller,"@");
-        $action = str_replace('@',"",$action);
-        $ctl->$action();
+    private static function getUrl(){
+        return parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     }
+
+
 
     /**
      * @param $routes String
-     * @param $controller String
+     * @param $controller string
      */
 
     public static function GET(string $routes , string $controller)
     {
 
-
         $method = $_SERVER['REQUEST_METHOD'];
-
-            if($routes == self::getUrl()){
-                try {
-                    if($method == 'get' || $method == 'GET'){
-
-                        self::sanitize( $controller);
-                        self::sanitizeURL($routes);
-                    }
-                }catch (\Exception $exception){
-                   echo  $exception->getMessage();
-                }
-            }
-
-
-
+        $type = ['GET','get'];
+        $result = self::sanitizeURL($routes,self::getUrl());
+        self::filterMethod($result,$method,$controller, $type);
 
     }
 
@@ -79,17 +44,9 @@ abstract class Router{
     {
 
         $method = $_SERVER['REQUEST_METHOD'];
-
-        if($routes == self::getUrl()){
-            try {
-                if($method == 'post' || $method == 'POST'){
-
-                    self::sanitize($controller);
-                }
-            }catch (\Exception $exception){
-                echo  $exception->getMessage();
-            }
-        }
+        $type = ['POST','post'];
+        $result = self::sanitizeURL($routes,self::getUrl());
+        self::filterMethod($result,$method,$controller, $type);
 
     }
 
@@ -102,16 +59,9 @@ abstract class Router{
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
-        if($routes == self::getUrl()){
-            try {
-                if($method == 'put' || $method == 'PUT'){
-
-                    self::sanitize($controller);
-                }
-            }catch (\Exception $exception){
-                echo  $exception->getMessage();
-            }
-        }
+        $type = ['PUT','put'];
+        $result = self::sanitizeURL($routes,self::getUrl());
+        self::filterMethod($result,$method,$controller, $type);
     }
 
     /**
@@ -122,16 +72,9 @@ abstract class Router{
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
-        if($routes == self::getUrl()){
-            try {
-                if($method == 'delete' || $method == 'DELETE'){
-
-                    self::sanitize($controller);
-                }
-            }catch (\Exception $exception){
-                echo  $exception->getMessage();
-            }
-        }
+        $type = ['DELETE','delete'];
+        $result = self::sanitizeURL($routes,self::getUrl());
+        self::filterMethod($result,$method,$controller, $type);
     }
 
 
